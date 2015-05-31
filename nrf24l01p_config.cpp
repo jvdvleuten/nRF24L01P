@@ -21,7 +21,7 @@
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-uint8_t NRF24L01P::get_config() {
+uint8_t NRF24L01p::get_config() {
     uint8_t config;
 
     spi.read_register(CONFIG, &config, sizeof (uint8_t));
@@ -29,7 +29,7 @@ uint8_t NRF24L01P::get_config() {
     return config;
 }
 
-void NRF24L01P::set_enable_crc(bool enable) {
+void NRF24L01p::set_enable_crc(bool enable) {
     uint8_t config;
 
     if (enable) {
@@ -41,7 +41,7 @@ void NRF24L01P::set_enable_crc(bool enable) {
     spi.write_register(CONFIG, &config, sizeof (uint8_t));
 }
 
-void NRF24L01P::set_crco_encoding_scheme(bool encoding_scheme) {
+void NRF24L01p::set_crco_encoding_scheme(bool encoding_scheme) {
     uint8_t config;
 
     if (encoding_scheme) {
@@ -53,7 +53,7 @@ void NRF24L01P::set_crco_encoding_scheme(bool encoding_scheme) {
     spi.write_register(CONFIG, &config, sizeof (uint8_t));
 }
 
-void NRF24L01P::setup_retries(uint8_t ard, uint8_t arc) {
+void NRF24L01p::setup_retries(uint8_t ard, uint8_t arc) {
     uint8_t data = (ard << SETUP_RETR_ARD | arc << SETUP_RETR_ARC);
 
     spi.write_register(SETUP_RETR, &data, sizeof (uint8_t));

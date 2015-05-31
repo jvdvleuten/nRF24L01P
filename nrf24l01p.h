@@ -19,14 +19,14 @@
 #ifndef NRF24L01P_H
 #define	NRF24L01P_H
 
-#include "spi.h"
-
 #include <stdint.h>
 
-class NRF24L01P {
+#include "spi.h"
+
+class NRF24L01p {
     SPI spi;
 public:
-    NRF24L01P(uint8_t ce_pin, uint8_t csn_pin);
+    NRF24L01p(uint8_t ce_pin, uint8_t csn_pin);
     
     void init(void);    
      

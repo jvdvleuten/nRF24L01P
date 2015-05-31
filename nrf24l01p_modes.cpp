@@ -23,16 +23,16 @@
 #include "util/time_util.h"
 
 
-void NRF24L01P::set_standby2() {    
+void NRF24L01p::set_standby2() {    
     set_prim_tx();    
     spi.set_ce_pin(1);
 }
 
-void NRF24L01P::set_standby1() {
+void NRF24L01p::set_standby1() {
     spi.set_ce_pin(0);
 }
 
-void NRF24L01P::set_prim_rx() {
+void NRF24L01p::set_prim_rx() {
     spi.set_ce_pin(0);
 
     uint8_t config = get_config() | 1 << CONFIG_PRIM_RX;
@@ -49,7 +49,7 @@ void NRF24L01P::set_prim_rx() {
     bcm2835_delayMicroseconds(130); // Standby to RX mode
 }
 
-void NRF24L01P::set_prim_tx() {
+void NRF24L01p::set_prim_tx() {
     spi.set_ce_pin(0);
 
     uint8_t config = get_config() & ~(1 << CONFIG_PRIM_RX);

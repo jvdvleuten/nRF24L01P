@@ -21,7 +21,7 @@
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-uint8_t NRF24L01P::get_feature() {
+uint8_t NRF24L01p::get_feature() {
     uint8_t feature;
 
     spi.read_register(FEATURE, &feature, sizeof (uint8_t));
@@ -29,7 +29,7 @@ uint8_t NRF24L01P::get_feature() {
     return feature;
 }
 
-void NRF24L01P::enable_auto_ack(bool enable) {
+void NRF24L01p::enable_auto_ack(bool enable) {
     uint8_t en_aa;
 
     auto_ack_enabled = enable;
@@ -39,7 +39,7 @@ void NRF24L01P::enable_auto_ack(bool enable) {
     spi.write_register(EN_AA, &en_aa, sizeof (uint8_t));
 }
 
-void NRF24L01P::enable_ack_payload(bool enable) {
+void NRF24L01p::enable_ack_payload(bool enable) {
     uint8_t feature;
 
     if (enable) {
@@ -51,7 +51,7 @@ void NRF24L01P::enable_ack_payload(bool enable) {
     spi.write_register(FEATURE, &feature, sizeof (uint8_t));
 }
 
-void NRF24L01P::enable_dynamic_payload(bool enable) {
+void NRF24L01p::enable_dynamic_payload(bool enable) {
     uint8_t feature;
 
     if (enable) {
@@ -74,7 +74,7 @@ void NRF24L01P::enable_dynamic_payload(bool enable) {
     }
 }
 
-void NRF24L01P::enable_dynamic_ack(bool enable) {
+void NRF24L01p::enable_dynamic_ack(bool enable) {
     uint8_t feature;
 
     if (enable) {

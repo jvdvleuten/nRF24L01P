@@ -23,7 +23,7 @@
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-void NRF24L01P::power_up() {
+void NRF24L01p::power_up() {
     uint8_t config = get_config() | 1 << CONFIG_PWR_UP;
 
     spi.write_register(CONFIG, &config, sizeof (uint8_t));

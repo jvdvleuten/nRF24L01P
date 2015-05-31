@@ -18,15 +18,17 @@
 
 #include "nrf24l01p.h"
 
+#include <bcm2835.h>
+
 #include "spi_commands.h"
 #include "register_map_table.h"
 #include "util/time_util.h"
 
-bool NRF24L01P::tx_fifo_empty() {
+bool NRF24L01p::tx_fifo_empty() {
     return get_fifo_status() & (1 << FIFO_STATUS_TX_EMPTY);
 }
 
-void NRF24L01P::block_when_tx_mode_more_than_4ms() {
+void NRF24L01p::block_when_tx_mode_more_than_4ms() {
 
     long long now = TimeUtil::current_timestamp_milliseconds();
 
@@ -47,7 +49,7 @@ void NRF24L01P::block_when_tx_mode_more_than_4ms() {
     }
 }
 
-void NRF24L01P::write_tx_payload(void* buf, uint8_t length) {
+void NRF24L01p::write_tx_payload(void* buf, uint8_t length) {
 
     if (!auto_ack_enabled) {
         block_when_tx_mode_more_than_4ms();
@@ -65,7 +67,7 @@ void NRF24L01P::write_tx_payload(void* buf, uint8_t length) {
     spi.write_command(W_TX_PAYLOAD, tx_payload, 32);
 }
 
-void NRF24L01P::write_tx_payload_noack(void* buf, uint8_t length) {
+void NRF24L01p::write_tx_payload_noack(void* buf, uint8_t length) {
     block_when_tx_mode_more_than_4ms();
 
     uint8_t tx_payload[32];
@@ -80,7 +82,7 @@ void NRF24L01P::write_tx_payload_noack(void* buf, uint8_t length) {
     spi.write_command(W_TX_PAYLOAD_NOACK, tx_payload, 32);
 }
 
-bool NRF24L01P::transmit(void* buf, uint8_t length) {
+bool NRF24L01p::transmit(void* buf, uint8_t length) {
 
     write_tx_payload(buf, length);
 

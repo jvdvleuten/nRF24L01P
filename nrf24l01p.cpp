@@ -16,24 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#include <nRF24L01P/nrf24l01p.h>
-
 #include "nrf24l01p.h"
 
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-NRF24L01P::NRF24L01P(uint8_t ce_pin, uint8_t csn_pin) : spi(ce_pin, csn_pin) {
+NRF24L01p::NRF24L01p(uint8_t ce_pin, uint8_t csn_pin) : spi(ce_pin, csn_pin) {
 
 }
 
-void NRF24L01P::init(void) {
-    spi.init();
+void NRF24L01p::init(void) {
+    this->spi.init();
 
     // *** Reset to reset values  ***
 
     // Config 
-    set_enable_crc(1);
+    this->set_enable_crc(1);
     set_crco_encoding_scheme(0);
 
     // Features
@@ -61,11 +59,11 @@ void NRF24L01P::init(void) {
     set_prim_tx();
 }
 
-uint8_t NRF24L01P::get_status(void) {
+uint8_t NRF24L01p::get_status(void) {
     return spi.write_command(NOP);
 }
 
-void NRF24L01P::set_rf_setup(bool cont_wave, bool rf_dr_low, bool pll_lock, bool rf_dr_high, uint8_t rf_pwr) {
+void NRF24L01p::set_rf_setup(bool cont_wave, bool rf_dr_low, bool pll_lock, bool rf_dr_high, uint8_t rf_pwr) {
     uint8_t data = cont_wave << RF_SETUP_CONT_WAVE |
             rf_dr_low << RF_SETUP_RF_DR_LOW |
             pll_lock << RF_SETUP_PLL_LOCK |

@@ -18,11 +18,12 @@
 
 #include "nrf24l01p.h"
 
+#include <bcm2835.h>
+
 #include "spi_commands.h"
 #include "register_map_table.h"
-#include "util/time_util.h"
 
-bool NRF24L01P::rx_data_ready() {
+bool NRF24L01p::rx_data_ready() {
     bool data_ready = get_status() & (1 << STATUS_RX_DR);
 
     if (data_ready) {
@@ -42,7 +43,7 @@ bool NRF24L01P::rx_data_ready() {
     return data_ready;
 }
 
-void NRF24L01P::read_rx_payload(void* buf, uint8_t length) {
+void NRF24L01p::read_rx_payload(void* buf, uint8_t length) {
     uint8_t rx_payload[32];
     uint8_t *p_rx_payload = rx_payload;
 

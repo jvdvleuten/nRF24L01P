@@ -19,20 +19,18 @@
 #include "nrf24l01p.h"
 
 #include <stdio.h>
-#include <string.h>
-#include <bcm2835.h>
 
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-void NRF24L01P::set_tx_addr(uint8_t *address, uint8_t width) {
+void NRF24L01p::set_tx_addr(uint8_t *address, uint8_t width) {
     spi.write_register(TX_ADDR, address, width);
 }
 
-void NRF24L01P::set_rx_addr_p0(uint8_t *address, uint8_t width) {
+void NRF24L01p::set_rx_addr_p0(uint8_t *address, uint8_t width) {
     spi.write_register(RX_ADDR_P0, address, width);
 }
 
-void NRF24L01P::set_rx_addr_p1(uint8_t *address, uint8_t width) {
+void NRF24L01p::set_rx_addr_p1(uint8_t *address, uint8_t width) {
     spi.write_register(RX_ADDR_P1, address, width);
 }

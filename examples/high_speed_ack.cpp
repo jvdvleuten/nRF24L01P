@@ -26,7 +26,7 @@
 using namespace std;
 
 /*
- * Example using maximum speed (around 203 KB/s)
+ * Example using maximum speed, but with ACK and CRC (around 68 KB/s)
  */
 int main(int argc, char** argv) {
     
@@ -48,15 +48,13 @@ int main(int argc, char** argv) {
     address2[3] = 0xC2;
     address2[4] = 0xC2;
 
-    // Disable CRC for maximum speed
-    nRF24L01p.set_enable_crc(0);
-    nRF24L01p.set_crco_encoding_scheme(0);
 
-    // Disable auto ack for maximum speed
-    nRF24L01p.enable_auto_ack(0);
+    nRF24L01p.set_enable_crc(1);
+    nRF24L01p.set_crco_encoding_scheme(1);
 
-    // No retries for maximum speed
-    nRF24L01p.setup_retries(0, 0);
+    nRF24L01p.enable_auto_ack(1);
+    
+    nRF24L01p.setup_retries(0, 15);
 
     int choice;
     

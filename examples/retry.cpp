@@ -26,7 +26,8 @@
 using namespace std;
 
 /*
- * Example using maximum speed (around 203 KB/s)
+ * Example using slowest speed and most reliable retry timeouts.
+ * Also, resend a failed packet in stead of flushing the FIFO TX.
  */
 int main(int argc, char** argv) {
     
@@ -48,15 +49,15 @@ int main(int argc, char** argv) {
     address2[3] = 0xC2;
     address2[4] = 0xC2;
 
-    // Disable CRC for maximum speed
-    nRF24L01p.set_enable_crc(0);
-    nRF24L01p.set_crco_encoding_scheme(0);
+    nRF24L01p.set_enable_crc(1);
+    nRF24L01p.set_crco_encoding_scheme(1);
 
-    // Disable auto ack for maximum speed
-    nRF24L01p.enable_auto_ack(0);
-
-    // No retries for maximum speed
-    nRF24L01p.setup_retries(0, 0);
+    nRF24L01p.enable_auto_ack(1);
+    
+    nRF24L01p.setup_retries(15, 15);
+    
+    // 250 kbps, full output
+    nRF24L01p.set_rf_setup(0, 1, 0, 0, 0b11);
 
     int choice;
     
@@ -87,11 +88,10 @@ int main(int argc, char** argv) {
             while (nRF24L01p.tx_fifo_full()) {
                 // Check if package has failed sending
                 if (nRF24L01p.tx_max_rt()) {
-                    // Flush failed payload and reset interrupts
-                    nRF24L01p.flush_tx();
+                    // Reset interrupt to retry package
                     nRF24L01p.reset_tx_interrupts();
                     packets_failed++;
-                    printf("Failed sending packets: %lu\n", packets_failed);
+                    printf("Failed sending packet '%lu', retrying...\n", data);
                 }
             }
             

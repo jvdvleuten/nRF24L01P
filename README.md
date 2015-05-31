@@ -1,6 +1,6 @@
-# nRF24L01P-data-link
+# nRF24L01p-data-link
 
-nRF24L01P-data-link driver is a high-speed, optimized and reliable Raspberry Pi driver for the Nordic nRF24L01+ Ultra low power 2.4GHz RF Transceiver.
+nRF24L01p-data-link driver is a high-speed, optimized and reliable Raspberry Pi driver for the Nordic nRF24L01+ Ultra low power 2.4GHz RF Transceiver.
 
 Driver features and goals:
   - High speed: up to 203 KB/s transfer speeds!
@@ -10,10 +10,10 @@ Driver features and goals:
   - Clear examples so you can dive right in
  
 ## Installation and connecting
-### Downloading and installing the nRF24L01P library
+### Downloading and installing the nRF24L01p library
 ```sh
-$ git clone http://github.com/jvdvleuten/nRF24L01P-data-link.git
-$ cd nRF24L01P-data-link
+$ git clone http://github.com/jvdvleuten/nRF24L01p-data-link.git
+$ cd nRF24L01p-data-link
 $ make
 $ sudo make install
 ```
@@ -39,14 +39,14 @@ To improve stability **a lot**, connect a 10 uF capacitor between the VCC and th
 ### Changing the CE and CSN pin on your board
 You can choose which CE and CSN pin are in use in the constructor:
 ```c++
-// NRF24L01P nRF24L01p(CE, CSN);
-NRF24L01P nRF24L01p(22, 0); // Default as in wiring example above.
+// NRF24L01p nRF24L01p(CE, CSN);
+NRF24L01p nRF24L01p(22, 0); // Default as in wiring example above.
 ```
 
 ## Code Example
-### Basic send and receive
+### Basic send
 ```c++
-NRF24L01P nRF24L01p(22, 0);
+NRF24L01p nRF24L01p(22, 0);
 nRF24L01p.init();
 
 // Transmit
@@ -73,9 +73,9 @@ if (nRF24L01p.rx_data_ready()) {
 ```
 
 ### Compiling your projects
-Use the **-lnRF24L01P** and the **-lbcm2835** flag to proper link the libraries to your project, e.g.:
+Use the **-lnRF24L01p** and the **-lbcm2835** flag to proper link the libraries to your project, e.g.:
 ```sh
-$ g++ -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp -lnRF24L01P -lbcm2835 -o output source
+$ g++ -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp -lnRF24L01p -lbcm2835 -o output source
 ```
 ### Other examples
 Further examples can be found in the `/examples/` dir:
@@ -96,7 +96,7 @@ $ sudo ./high_speed (or other example)
 
 ## Dependencies
 
-nRF24L01P-data-link uses the following open source projects to work properly:
+nRF24L01p-data-link uses the following open source projects to work properly:
 * [bcm2835] - C library for Broadcom BCM 2835 as used in Raspberry Pi
 
 ## Contributors

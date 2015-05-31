@@ -27,9 +27,16 @@ Connect the following pins of your nRF24L01+ to your Raspberry Pi 2:
 | ------------- |---------------| ------------- |------------------| 
 | VCC           | 3v3  (any 3v3)| GND (boxed)   | GND     (any GND)|  
 | CSN           | CE0  (pin 24) | CE            | GPIO 22 (pin 15) | 
-| MOSI          | MOSI (pin 19) | SCK           | SCLK    (pin 23)  | 
-| IRQ           | -             | MISO          | MISO    (pin 21)  | 
+| MOSI          | MOSI (pin 19) | SCK           | SCLK    (pin 23) | 
+| IRQ           | -             | MISO          | MISO    (pin 21) | 
 
+Do ***not*** connect the VCC to the 5v output of the Raspberry Pi. This will destroy your transceiver.
+
+### Improve stability with 10 uF Capacitor
+
+To improve stability **a lot**, connect a 10 uF capacitor between the VCC and the GND of your nRF24L01+ transceiver. Connect the +(plus)side of the capacitor to the VCC and the -(minus)side to the GND. Without the capacitor, our transceivers were not even working!
+
+### Changing the CE and CSN pin on your board
 You can choose which CE and CSN pin are in use in the constructor:
 ```c++
 // NRF24L01P nRF24L01p(CE, CSN);
@@ -73,7 +80,9 @@ $ g++ -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfp
 ### Other examples
 Further examples can be found in the `/examples/` dir:
 * *hello_word*: Basic sending and receiving of a package
-* *high_speed*: High speed transfer without ACK
+* *high_speed*: High speed transfer without ACK (about 203 KB/s)
+* *high_speed_ack*: High speed transfer with ACK packages and CRC failure detection. (about 67 KB/s)
+* *retry*: Slowest speed transfer with indefinite retries
 
 To compile and run examples:
 ```sh

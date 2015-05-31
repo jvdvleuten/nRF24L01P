@@ -21,7 +21,7 @@ $ sudo make install
 ### Connecting your nRF24L01+ to your Raspberry Pi 2 Model B
 Please refer http://pi.gadgetoid.com/pinout for the pin layout on your Raspberry Pi 2.
 
-Connect the following pins of your nRF24L01+:
+Connect the following pins of your nRF24L01+ to your Raspberry Pi 2:
 
 | nRF24L01+     | RPi2          | nRF24L01+     | RPi2             |
 | ------------- |---------------| ------------- |------------------| 
@@ -72,8 +72,8 @@ $ g++ -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfp
 ```
 ### Other examples
 Further examples can be found in the `/examples/` dir:
-* hello_word: Basic sending and receiving of a package
-* high_speed: High speed transfer without ACK
+* *hello_word*: Basic sending and receiving of a package
+* *high_speed*: High speed transfer without ACK
 
 To compile and run examples:
 ```sh
@@ -105,3 +105,4 @@ as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
 
 [bcm2835]:http://www.airspayce.com/mikem/bcm2835/
+

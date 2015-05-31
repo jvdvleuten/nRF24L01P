@@ -9,7 +9,7 @@ Driver features and goals:
   - Support for the Raspberry Pi 2 Model B
   - Clear examples so you can dive right in
  
-## Installation
+## Installation and connecting
 ### Downloading and installing the nRF24L01P library
 ```sh
 $ git clone http://github.com/jvdvleuten/nRF24L01P-data-link.git
@@ -44,7 +44,7 @@ NRF24L01P nRF24L01p(22, 0); // Default as in wiring example above.
 ```
 
 ## Code Example
-### Basic sending and receiving with default init
+### Basic send and receive
 ```c++
 NRF24L01P nRF24L01p(22, 0);
 nRF24L01p.init();
@@ -80,9 +80,9 @@ $ g++ -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfp
 ### Other examples
 Further examples can be found in the `/examples/` dir:
 * *hello_word*: Basic sending and receiving of a package
-* *high_speed*: High speed transfer without ACK (about 203 KB/s)
-* *high_speed_ack*: High speed transfer with ACK packages and CRC failure detection. (about 67 KB/s)
-* *retry*: Slowest speed transfer with indefinite retries
+* *high_speed*: Transfer without ACK (around 203 KB/s)
+* *high_speed_ack*: Transfer with ACK (around 67 KB/s)
+* *retry*: Slowest speed transfer with indefinite retries (around 16 KB/s)
 
 To compile and run examples:
 ```sh

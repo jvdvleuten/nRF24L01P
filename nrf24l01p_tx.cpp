@@ -93,6 +93,8 @@ bool NRF24L01P::transmit(void* buf, uint8_t length) {
 
     // We are transmitting only one packet
     spi.set_ce_pin(0);
+    
+    bcm2835_delayMicroseconds(130);
 
     uint8_t status = get_status();
 

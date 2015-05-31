@@ -26,7 +26,7 @@
 using namespace std;
 
 /*
- * 
+ * Example using maximum speed
  */
 int main(int argc, char** argv) {
     

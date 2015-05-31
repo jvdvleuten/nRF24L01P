@@ -19,7 +19,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <nRF24L01P/nrf24l01p.h>
+#include <nRF24L01p/nrf24l01p.h>
 
 #include "../util/time_util.h"
 

@@ -3,7 +3,7 @@ CFLAGS=-c -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard 
 LDFLAGS=-shared -lrt -lbcm2835
 SOURCES=$(wildcard *.cpp) $(wildcard util/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
-LIB=nRF24L01P
+LIB=nRF24L01p
 
 all: $(OBJECTS) lib$(LIB).so
     

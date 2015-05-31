@@ -16,8 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#ifndef NRF24L01P_H
-#define	NRF24L01P_H
+#ifndef NRF24L01p_H
+#define	NRF24L01p_H
 
 #include <stdint.h>
 

@@ -123,10 +123,11 @@ while(1) {
 
 ### Basic receive on the Arduino
 ```c++
+NRF24L01p nRF24L01p(9, 10);
+
 void setup() {
 	Serial.begin(115200);
-
-	NRF24L01p nRF24L01p(9, 10);
+	
 	nRF24L01p.init();
 	
 	// Receive

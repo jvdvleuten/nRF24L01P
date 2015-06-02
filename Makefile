@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS = -c -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp -std=c++0x -DLINUX
-LDFLAGS = -shared -lrt -lbcm2835 -DLINUX
+CFLAGS = -c -Wall -fPIC -Ofast -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp -std=c++0x
+LDFLAGS = -shared -lrt -lbcm2835
 SOURCES = $(wildcard *.cpp) $(wildcard util/*.cpp) $(wildcard arch/rpi/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 LIB = nRF24L01p

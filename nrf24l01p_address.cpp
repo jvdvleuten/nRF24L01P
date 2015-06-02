@@ -23,6 +23,10 @@
 #include "spi_commands.h"
 #include "register_map_table.h"
 
+void NRF24L01p::set_address_width(uint8_t *address_width) {
+    spi.write_register(SETUP_AW, address_width, sizeof(uint8_t));
+}
+
 void NRF24L01p::set_tx_addr(uint8_t *address, uint8_t width) {
     spi.write_register(TX_ADDR, address, width);
 }

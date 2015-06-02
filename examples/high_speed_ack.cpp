@@ -21,7 +21,7 @@
 #include <iostream>
 #include <nRF24L01p/nrf24l01p.h>
 
-#include "../util/time_util.h"
+#include "../time_util.h"
 
 using namespace std;
 
@@ -48,7 +48,6 @@ int main(int argc, char** argv) {
     address2[3] = 0xC2;
     address2[4] = 0xC2;
 
-
     nRF24L01p.set_enable_crc(1);
     nRF24L01p.set_crco_encoding_scheme(1);
 
@@ -71,8 +70,8 @@ int main(int argc, char** argv) {
         unsigned long packets_failed = 0;
         unsigned long packets_sent = 0;
 
-        long long start = TimeUtil::current_timestamp_milliseconds();
-        long long now = start;
+        unsigned long start = TimeUtil::current_timestamp_milliseconds();
+        unsigned long now = start;
 
         // Put transceiver in standby2 mode for fast transmitting
         nRF24L01p.set_standby2();
@@ -100,7 +99,7 @@ int main(int argc, char** argv) {
             packets_sent++;
 
             now = TimeUtil::current_timestamp_milliseconds();
-            long long elapsed_milliseconds = now - start;
+            unsigned long elapsed_milliseconds = now - start;
 
             if (elapsed_milliseconds > 1000) {
                 float bytes_received = packets_sent * 32;
@@ -126,12 +125,12 @@ int main(int argc, char** argv) {
 
         unsigned long received_packets = 0;
 
-        long long start = TimeUtil::current_timestamp_milliseconds();
-        long long now = start;
+        unsigned long start = TimeUtil::current_timestamp_milliseconds();
+        unsigned long now = start;
 
         while (1) {
             now = TimeUtil::current_timestamp_milliseconds();
-            long long elapsed_milliseconds = now - start;
+            unsigned long elapsed_milliseconds = now - start;
             
             // Check for payloads in the RX FIFO. This is faster then
             // first checking rx_data_ready().

@@ -18,17 +18,19 @@
 
 #include "time_util.h"
 
-#include <stddef.h>
-#include <sys/time.h>
+#include <Arduino.h>
 
-long long TimeUtil::current_timestamp_milliseconds() {
-    struct timeval time_stamp;
-    
-    gettimeofday(&time_stamp, NULL); 
-    
-    long long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
-    
-    return milliseconds;
+unsigned long TimeUtil::current_timestamp_milliseconds() {
+    return millis();
 }
+
+void TimeUtil::delay_microseconds(unsigned int micro_seconds) {
+    delayMicroseconds(micro_seconds);
+}
+
+TimeUtil::TimeUtil() {
+
+}
+
 
 

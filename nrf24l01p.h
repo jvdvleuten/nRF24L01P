@@ -20,11 +20,10 @@
 #define	NRF24L01p_H
 
 #include <stdint.h>
-
-#include "spi.h"
+#include "spi_interface.h"
 
 class NRF24L01p {
-    SPI spi;
+    SpiInterface spi;
 public:
     NRF24L01p(uint8_t ce_pin, uint8_t csn_pin);
     
@@ -70,6 +69,7 @@ public:
      */
     void enable_dynamic_ack(bool enable);
     
+    void set_address_width(uint8_t *address_width);
     void set_tx_addr(uint8_t *address, uint8_t width);
     void set_rx_addr_p0(uint8_t *address, uint8_t width);
     void set_rx_addr_p1(uint8_t *address, uint8_t width);      
@@ -231,7 +231,7 @@ public:
 private:        
     bool auto_ack_enabled;
     void block_when_tx_mode_more_than_4ms(void);    
-    long long fifo_tx_empty_timestamp;
+    unsigned long fifo_tx_empty_timestamp;
 };
 
 #endif	/* NRF24_H */

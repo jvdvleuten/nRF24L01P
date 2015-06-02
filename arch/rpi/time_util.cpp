@@ -16,29 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#ifndef SPI_H
-#define	SPI_H
+#include "../../time_util.h"
 
+#include <stddef.h>
+#include <sys/time.h>
 #include <bcm2835.h>
 
-class SPI {
-public:
-    SPI(uint8_t ce_pin, uint8_t csn_pin);
-    
-    void init(void);
-    
-    void write_register(uint8_t register_address, uint8_t* buf, uint8_t len);
-    void read_register(uint8_t register_address, uint8_t* buf, uint8_t len);
-    
-    uint8_t write_command(uint8_t command);
-    void write_command(uint8_t command, uint8_t* buf, uint8_t len);
-    void read_command(uint8_t command, uint8_t* buf, uint8_t len);
-    
-    void set_ce_pin(bool state);
-private:    
-    uint8_t ce_pin_;
-    uint8_t csn_pin_; 
-};
+unsigned long TimeUtil::current_timestamp_milliseconds() {
+    struct timeval time_stamp;
 
-#endif	/* SPI_H */
+    gettimeofday(&time_stamp, NULL);
+
+    unsigned long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
+
+    return milliseconds;
+}
+
+void TimeUtil::delay_microseconds(unsigned int micro_seconds) {    
+    bcm2835_delayMicroseconds(micro_seconds);
+}
+
+TimeUtil::TimeUtil() {
+
+}
+
+
 

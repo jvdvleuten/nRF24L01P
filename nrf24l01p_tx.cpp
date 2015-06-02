@@ -18,11 +18,9 @@
 
 #include "nrf24l01p.h"
 
-#include <bcm2835.h>
-
 #include "spi_commands.h"
 #include "register_map_table.h"
-#include "util/time_util.h"
+#include "time_util.h"
 
 bool NRF24L01p::tx_fifo_empty() {
     return get_fifo_status() & (1 << FIFO_STATUS_TX_EMPTY);
@@ -30,7 +28,7 @@ bool NRF24L01p::tx_fifo_empty() {
 
 void NRF24L01p::block_when_tx_mode_more_than_4ms() {
 
-    long long now = TimeUtil::current_timestamp_milliseconds();
+    unsigned long now = TimeUtil::current_timestamp_milliseconds();
 
     bool is_tx_fifo_empty = tx_fifo_empty();
 
@@ -91,12 +89,12 @@ bool NRF24L01p::transmit(void* buf, uint8_t length) {
 
     // Pulse add least 10 us to start TX mode
     // Thce = 10us
-    bcm2835_delayMicroseconds(11);
+    TimeUtil::delay_microseconds(11);
 
     // We are transmitting only one packet
     spi.set_ce_pin(0);
     
-    bcm2835_delayMicroseconds(130);
+    TimeUtil::delay_microseconds(130);
 
     uint8_t status = get_status();
 
@@ -109,7 +107,7 @@ bool NRF24L01p::transmit(void* buf, uint8_t length) {
     if (status & 1 << STATUS_TX_DS) {
         // Other party needs 130 us to get to RX mode again.
         // Tstby2a = 130us
-        bcm2835_delayMicroseconds(130);
+        TimeUtil::delay_microseconds(130);
 
         return 1;
     }

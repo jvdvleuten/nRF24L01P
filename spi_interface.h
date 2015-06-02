@@ -16,16 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#include "nrf24l01p.h"
+#ifndef SpiInterface_H
+#define	SpiInterface_H
 
-#include "time_util.h"
-#include "spi_commands.h"
-#include "register_map_table.h"
+#include <stdint.h>
 
-void NRF24L01p::power_up() {
-    uint8_t config = get_config() | 1 << CONFIG_PWR_UP;
+class SpiInterface {
+public:
+    SpiInterface(uint8_t ce_pin, uint8_t csn_pin);
+    
+    void init(void);
+    
+    void write_register(uint8_t register_address, uint8_t* buf, uint8_t len);
+    void read_register(uint8_t register_address, uint8_t* buf, uint8_t len);
+    
+    uint8_t write_command(uint8_t command);
+    void write_command(uint8_t command, uint8_t* buf, uint8_t len);
+    void read_command(uint8_t command, uint8_t* buf, uint8_t len);
+    
+    void set_ce_pin(bool state);
+private:    
+    uint8_t ce_pin_;
+    uint8_t csn_pin_; 
+};
 
-    spi.write_register(CONFIG, &config, sizeof (uint8_t));
+#endif	/* SpiInterface_H */
 
-    TimeUtil::delay_microseconds(4500); //4.5ms
-}

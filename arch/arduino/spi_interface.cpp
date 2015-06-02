@@ -16,60 +16,66 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#include "spi.h"
+#include "spi_interface.h"
 
 #include <stdint.h>
-#include <bcm2835.h>
+#include <SPI.h>
 
 #include "spi_commands.h"
 #include "register_map_table.h"
 
-
-SPI::SPI(uint8_t ce_pin, uint8_t csn_pin) {
+SpiInterface::SpiInterface(uint8_t ce_pin, uint8_t csn_pin) {
     ce_pin_ = ce_pin;
     csn_pin_ = csn_pin;
 }
 
-void SPI::init(void) {
-    if (!bcm2835_init()) {
-        return;
-    }
-
-    bcm2835_spi_begin();
+void SpiInterface::init(void) {
     
-    bcm2835_gpio_fsel(ce_pin_, BCM2835_GPIO_FSEL_OUTP);
+    SPI.begin();
+    
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
+
+    pinMode(csn_pin_, OUTPUT);
+    digitalWrite(csn_pin_, 1);
+
+    pinMode(ce_pin_, OUTPUT);
     set_ce_pin(0);    
-
-    bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);
-    bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
-    bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_16);
-    bcm2835_spi_chipSelect(csn_pin_);
-    bcm2835_spi_setChipSelectPolarity(csn_pin_, 0);
 }
 
-void SPI::set_ce_pin(bool state) {
-    bcm2835_gpio_write(ce_pin_, state);
+void SpiInterface::set_ce_pin(bool state) {
+    digitalWrite(ce_pin_, state);
 }
 
-void SPI::write_register(uint8_t register_address, uint8_t *buf, uint8_t len) {
+void SpiInterface::write_register(uint8_t register_address, uint8_t *buf, uint8_t len) {
 
     uint8_t command = (W_REGISTER | (0b00011111 & register_address));
 
     return write_command(command, buf, len);
 }
 
-void SPI::read_register(uint8_t register_address, uint8_t* buf, uint8_t len) {
+void SpiInterface::read_register(uint8_t register_address, uint8_t* buf, uint8_t len) {
 
     uint8_t command = (R_REGISTER | (0b00011111 & register_address));
 
     return read_command(command, buf, len);
 }
 
-uint8_t SPI::write_command(uint8_t command) {
-    return bcm2835_spi_transfer(command);
+uint8_t SpiInterface::write_command(uint8_t command) {
+
+    //SPI.beginTransaction(spi_settings);
+    digitalWrite(csn_pin_, 0);
+    
+    uint8_t result = SPI.transfer(command);
+    
+    digitalWrite(csn_pin_, 1);
+    //SPI.endTransaction();
+    
+    return result;
 }
 
-void SPI::write_command(uint8_t command, uint8_t* buf, uint8_t len) {
+void SpiInterface::write_command(uint8_t command, uint8_t* buf, uint8_t len) {
     uint8_t mosi[32 + 1];
     uint8_t miso[32 + 1];
 
@@ -81,10 +87,18 @@ void SPI::write_command(uint8_t command, uint8_t* buf, uint8_t len) {
         *p_mosi++ = *buf++;
     }
 
-    bcm2835_spi_transfernb((char*) mosi, (char*) miso, len + 1);
+    //SPI.beginTransaction(spi_settings);
+    digitalWrite(csn_pin_, 0);
+
+    for (uint8_t i = 0; i < len + 1; i++) {
+        SPI.transfer(mosi[i]);
+    }
+
+    digitalWrite(csn_pin_, 1);
+    //SPI.endTransaction();
 }
 
-void SPI::read_command(uint8_t command, uint8_t* buf, uint8_t len) {
+void SpiInterface::read_command(uint8_t command, uint8_t* buf, uint8_t len) {
     uint8_t mosi[32 + 1];
     uint8_t miso[32 + 1];
 
@@ -93,7 +107,15 @@ void SPI::read_command(uint8_t command, uint8_t* buf, uint8_t len) {
 
     *p_mosi = command;
 
-    bcm2835_spi_transfernb((char*) mosi, (char*) miso, len + 1);
+    //SPI.beginTransaction(spi_settings);
+    digitalWrite(csn_pin_, 0);
+
+    for (uint8_t i = 0; i < len + 1; i++) {
+        miso[i] = SPI.transfer(mosi[i]);
+    }
+
+    digitalWrite(csn_pin_, 1);
+    //SPI.endTransaction();
 
     p_miso++; // Skip status byte
 

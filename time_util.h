@@ -19,9 +19,12 @@
 #ifndef TIME_UTIL_H
 #define	TIME_UTIL_H
 
+#include <stdint.h>
+
 class TimeUtil {
 public:
-    static long long current_timestamp_milliseconds();
+    static unsigned long current_timestamp_milliseconds();
+    static void delay_microseconds(unsigned int micro_seconds);
 private:
     TimeUtil();
 };

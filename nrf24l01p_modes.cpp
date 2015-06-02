@@ -20,7 +20,7 @@
 
 #include "spi_commands.h"
 #include "register_map_table.h"
-#include "util/time_util.h"
+#include "time_util.h"
 
 
 void NRF24L01p::set_standby2() {    
@@ -46,7 +46,7 @@ void NRF24L01p::set_prim_rx() {
 
     spi.set_ce_pin(1);
 
-    bcm2835_delayMicroseconds(130); // Standby to RX mode
+    TimeUtil::delay_microseconds(130); // Standby to RX mode
 }
 
 void NRF24L01p::set_prim_tx() {

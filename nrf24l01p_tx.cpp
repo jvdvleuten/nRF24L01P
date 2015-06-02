@@ -29,27 +29,21 @@ bool NRF24L01p::tx_fifo_empty() {
 void NRF24L01p::block_when_tx_mode_more_than_4ms() {
 
     // Timing functions are to slow and not precise enough for the Arduino
-    // So we calculate how many packets can be send in 4 ms and keep track
-    // of that.
+    // So we keep track how many packets have been send.
     //
-    // 1 byte preamble + 3 byte address + 32 byte payload
-    //          = 36 bytes (minimum size with full payload)
+    // 2 Mb/s = 250 KB/s = 250 B/s = 7.8 packets per ms (not including overhead)
     //
-    // 2 MBPS = 250 kb/s = 250 byte/ms
+    // So we block the TX FIFO every 32 packets
     //
-    // In 4 ms, there will be 1000 bytes sent
-    // 1000 bytes / 36 bytes per packet = 27,7 packets/4ms
-    //
-    // So halt the TX FIFO every 28 packets will do the job
-    //
-
+    // Todo: update timing for other speeds, as less packets will be send per ms    
+    
     bool is_tx_fifo_empty = tx_fifo_empty();
 
     if (is_tx_fifo_empty) {
         fifo_tx_written_counter = 0;
-    } 
+    }     
     
-    if (!is_tx_fifo_empty && fifo_tx_written_counter > 28) {        
+    if (!is_tx_fifo_empty && fifo_tx_written_counter > 32) {        
         while (!tx_fifo_empty()) {
             // The nRF24L01+ transmitter PLL operates in open loop when in TX
             // mode. It is important never to keep the nRF24L01+ in TX mode for more than 4ms at a time. If the

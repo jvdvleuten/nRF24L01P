@@ -18,8 +18,7 @@
 
 #include "nrf24l01p.h"
 
-#include <bcm2835.h>
-
+#include "time_util.h"
 #include "spi_commands.h"
 #include "register_map_table.h"
 
@@ -35,7 +34,7 @@ bool NRF24L01p::rx_data_ready() {
          * To ensure this receiver can change to TX mode and other party has
          * received the ACK package, we wait that time period.         
          */
-        bcm2835_delayMicroseconds(130 + 165 + 130); 
+        TimeUtil::delay_microseconds(130 + 165 + 130); 
         
         reset_rx_interrupt();
     }

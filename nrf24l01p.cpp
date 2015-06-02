@@ -26,12 +26,15 @@ NRF24L01p::NRF24L01p(uint8_t ce_pin, uint8_t csn_pin) : spi(ce_pin, csn_pin) {
 }
 
 void NRF24L01p::init(void) {
-    this->spi.init();
+    spi.init();
 
-    // *** Reset to reset values  ***
-
+    // *** Reset to reset values  ***    
+    
+    uint8_t address_width = 0b11;    
+    set_address_width(&address_width);
+    
     // Config 
-    this->set_enable_crc(1);
+    set_enable_crc(1);
     set_crco_encoding_scheme(0);
 
     // Features

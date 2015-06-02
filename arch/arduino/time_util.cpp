@@ -16,15 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#ifndef TIME_UTIL_H
-#define	TIME_UTIL_H
+#include "time_util.h"
 
-class TimeUtil {
-public:
-    static long long current_timestamp_milliseconds();
-private:
-    TimeUtil();
-};
+#include <Arduino.h>
 
-#endif	/* TIME_UTIL_H */
+void TimeUtil::delay_microseconds(unsigned int micro_seconds) {
+    delayMicroseconds(micro_seconds);
+}
+
+TimeUtil::TimeUtil() {
+
+}
+
+
 

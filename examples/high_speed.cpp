@@ -20,13 +20,24 @@
 #include <cstdlib>
 #include <iostream>
 #include <nRF24L01p/nrf24l01p.h>
+#include <sys/time.h>
 
-#include "../util/time_util.h"
+#include "../time_util.h"
 
 using namespace std;
 
+unsigned long current_timestamp_milliseconds() {
+    struct timeval time_stamp;
+
+    gettimeofday(&time_stamp, NULL);
+
+    unsigned long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
+
+    return milliseconds;
+}
+
 /*
- * Example using maximum speed (around 203 KB/s)
+ * Example using maximum speed
  */
 int main(int argc, char** argv) {
     
@@ -34,21 +45,21 @@ int main(int argc, char** argv) {
 
     nRF24L01p.init();
 
-    uint8_t address1[5];
+    uint8_t address1[3];
     address1[0] = 0xE7;
     address1[1] = 0xE7;
     address1[2] = 0xE7;
-    address1[3] = 0xE7;
-    address1[4] = 0xE7;
 
-    uint8_t address2[5];
+    uint8_t address2[3];
     address2[0] = 0xC2;
     address2[1] = 0xC2;
     address2[2] = 0xC2;
-    address2[3] = 0xC2;
-    address2[4] = 0xC2;
-
-    // Disable CRC for maximum speed
+    
+    // Set smallest address width for minimum overhead
+    uint8_t address_width = 0b01;    
+    nRF24L01p.set_address_width(&address_width);
+    
+    // Disable CRC for minimum overhead
     nRF24L01p.set_enable_crc(0);
     nRF24L01p.set_crco_encoding_scheme(0);
 
@@ -64,17 +75,16 @@ int main(int argc, char** argv) {
     cin >> choice;
 
     if (choice) {
-        nRF24L01p.set_tx_addr(address2, 5);
-        nRF24L01p.set_rx_addr_p0(address2, 5);
-        nRF24L01p.set_rx_addr_p1(address1, 5);
+        nRF24L01p.set_tx_addr(address2, 3);
+        nRF24L01p.set_rx_addr_p0(address2, 3);
+        nRF24L01p.set_rx_addr_p1(address1, 3);
 
         unsigned long data = rand();
-        
-        unsigned long packets_failed = 0;
+
         unsigned long packets_sent = 0;
 
-        long long start = TimeUtil::current_timestamp_milliseconds();
-        long long now = start;
+        unsigned long start = current_timestamp_milliseconds();
+        unsigned long now = start;
 
         // Put transceiver in standby2 mode for fast transmitting
         nRF24L01p.set_standby2();
@@ -85,14 +95,8 @@ int main(int argc, char** argv) {
 
             // Wait until there is space in TX FIFO
             while (nRF24L01p.tx_fifo_full()) {
-                // Check if package has failed sending
-                if (nRF24L01p.tx_max_rt()) {
-                    // Flush failed payload and reset interrupts
-                    nRF24L01p.flush_tx();
-                    nRF24L01p.reset_tx_interrupts();
-                    packets_failed++;
-                    printf("Failed sending packets: %lu\n", packets_failed);
-                }
+                // There will be no max retransmissions flag
+                // because we are not waiting for an ACK message
             }
             
             // We are in standby2 mode, so transceiver will transmit after
@@ -101,8 +105,8 @@ int main(int argc, char** argv) {
 
             packets_sent++;
 
-            now = TimeUtil::current_timestamp_milliseconds();
-            long long elapsed_milliseconds = now - start;
+            now = current_timestamp_milliseconds();
+            unsigned long elapsed_milliseconds = now - start;
 
             if (elapsed_milliseconds > 1000) {
                 float bytes_received = packets_sent * 32;
@@ -117,9 +121,9 @@ int main(int argc, char** argv) {
 
     } else {
         
-        nRF24L01p.set_tx_addr(address1, 5);
-        nRF24L01p.set_rx_addr_p0(address1, 5);
-        nRF24L01p.set_rx_addr_p1(address2, 5);
+        nRF24L01p.set_tx_addr(address1, 3);
+        nRF24L01p.set_rx_addr_p0(address1, 3);
+        nRF24L01p.set_rx_addr_p1(address2, 3);
 
         // Listen for incoming packets
         nRF24L01p.set_prim_rx();
@@ -128,12 +132,12 @@ int main(int argc, char** argv) {
 
         unsigned long received_packets = 0;
 
-        long long start = TimeUtil::current_timestamp_milliseconds();
-        long long now = start;
+        unsigned long start = current_timestamp_milliseconds();
+        unsigned long now = start;
 
         while (1) {
-            now = TimeUtil::current_timestamp_milliseconds();
-            long long elapsed_milliseconds = now - start;
+            now = current_timestamp_milliseconds();
+            unsigned long elapsed_milliseconds = now - start;
             
             // Check for payloads in the RX FIFO. This is faster then
             // first checking rx_data_ready().
@@ -160,4 +164,3 @@ int main(int argc, char** argv) {
     
     return 0;
 }
-

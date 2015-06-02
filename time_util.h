@@ -16,19 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
  */
 
-#include "time_util.h"
+#ifndef TIME_UTIL_H
+#define	TIME_UTIL_H
 
-#include <stddef.h>
-#include <sys/time.h>
+#include <stdint.h>
 
-long long TimeUtil::current_timestamp_milliseconds() {
-    struct timeval time_stamp;
-    
-    gettimeofday(&time_stamp, NULL); 
-    
-    long long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
-    
-    return milliseconds;
-}
+class TimeUtil {
+public:
+    static void delay_microseconds(unsigned int micro_seconds);
+private:
+    TimeUtil();
+};
 
+#endif	/* TIME_UTIL_H */
 

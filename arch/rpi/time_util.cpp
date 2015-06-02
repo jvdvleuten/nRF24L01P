@@ -18,19 +18,7 @@
 
 #include "../../time_util.h"
 
-#include <stddef.h>
-#include <sys/time.h>
 #include <bcm2835.h>
-
-unsigned long TimeUtil::current_timestamp_milliseconds() {
-    struct timeval time_stamp;
-
-    gettimeofday(&time_stamp, NULL);
-
-    unsigned long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
-
-    return milliseconds;
-}
 
 void TimeUtil::delay_microseconds(unsigned int micro_seconds) {    
     bcm2835_delayMicroseconds(micro_seconds);

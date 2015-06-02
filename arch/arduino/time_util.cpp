@@ -20,10 +20,6 @@
 
 #include <Arduino.h>
 
-unsigned long TimeUtil::current_timestamp_milliseconds() {
-    return millis();
-}
-
 void TimeUtil::delay_microseconds(unsigned int micro_seconds) {
     delayMicroseconds(micro_seconds);
 }

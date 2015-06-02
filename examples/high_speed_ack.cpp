@@ -20,10 +20,21 @@
 #include <cstdlib>
 #include <iostream>
 #include <nRF24L01p/nrf24l01p.h>
+#include <sys/time.h>
 
 #include "../time_util.h"
 
 using namespace std;
+
+unsigned long current_timestamp_milliseconds() {
+    struct timeval time_stamp;
+
+    gettimeofday(&time_stamp, NULL);
+
+    unsigned long milliseconds = time_stamp.tv_sec * 1000LL + time_stamp.tv_usec / 1000;
+
+    return milliseconds;
+}
 
 /*
  * Example using maximum speed, but with ACK and CRC (around 68 KB/s)
@@ -70,7 +81,7 @@ int main(int argc, char** argv) {
         unsigned long packets_failed = 0;
         unsigned long packets_sent = 0;
 
-        unsigned long start = TimeUtil::current_timestamp_milliseconds();
+        unsigned long start = current_timestamp_milliseconds();
         unsigned long now = start;
 
         // Put transceiver in standby2 mode for fast transmitting
@@ -98,7 +109,7 @@ int main(int argc, char** argv) {
 
             packets_sent++;
 
-            now = TimeUtil::current_timestamp_milliseconds();
+            now = current_timestamp_milliseconds();
             unsigned long elapsed_milliseconds = now - start;
 
             if (elapsed_milliseconds > 1000) {
@@ -125,11 +136,11 @@ int main(int argc, char** argv) {
 
         unsigned long received_packets = 0;
 
-        unsigned long start = TimeUtil::current_timestamp_milliseconds();
+        unsigned long start = current_timestamp_milliseconds();
         unsigned long now = start;
 
         while (1) {
-            now = TimeUtil::current_timestamp_milliseconds();
+            now = current_timestamp_milliseconds();
             unsigned long elapsed_milliseconds = now - start;
             
             // Check for payloads in the RX FIFO. This is faster then

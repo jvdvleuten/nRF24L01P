@@ -23,7 +23,6 @@
 
 class TimeUtil {
 public:
-    static unsigned long current_timestamp_milliseconds();
     static void delay_microseconds(unsigned int micro_seconds);
 private:
     TimeUtil();

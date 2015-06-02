@@ -231,7 +231,7 @@ public:
 private:        
     bool auto_ack_enabled;
     void block_when_tx_mode_more_than_4ms(void);    
-    unsigned long fifo_tx_empty_timestamp;
+    unsigned int fifo_tx_written_counter;
 };
 
 #endif	/* NRF24_H */

@@ -76,50 +76,28 @@ uint8_t SpiInterface::write_command(uint8_t command) {
 }
 
 void SpiInterface::write_command(uint8_t command, uint8_t* buf, uint8_t len) {
-    uint8_t mosi[32 + 1];
-    uint8_t miso[32 + 1];
-
-    uint8_t *p_mosi = mosi;
-
-    *p_mosi++ = command;
-
-    for (uint8_t i = 0; i < len; i++) {
-        *p_mosi++ = *buf++;
-    }
-
-    //SPI.beginTransaction(spi_settings);
+    
     digitalWrite(csn_pin_, 0);
-
-    for (uint8_t i = 0; i < len + 1; i++) {
-        SPI.transfer(mosi[i]);
+    
+    SPI.transfer(command);
+    
+    while(len--)
+    {
+        SPI.transfer(*buf++);
     }
-
-    digitalWrite(csn_pin_, 1);
-    //SPI.endTransaction();
+    
+    digitalWrite(csn_pin_, 1);    
 }
 
 void SpiInterface::read_command(uint8_t command, uint8_t* buf, uint8_t len) {
-    uint8_t mosi[32 + 1];
-    uint8_t miso[32 + 1];
-
-    uint8_t *p_mosi = mosi;
-    uint8_t *p_miso = miso;
-
-    *p_mosi = command;
-
-    //SPI.beginTransaction(spi_settings);
     digitalWrite(csn_pin_, 0);
-
-    for (uint8_t i = 0; i < len + 1; i++) {
-        miso[i] = SPI.transfer(mosi[i]);
+    
+    SPI.transfer(command);
+    
+    while(len--)
+    {
+        *buf++ = SPI.transfer(0);
     }
-
-    digitalWrite(csn_pin_, 1);
-    //SPI.endTransaction();
-
-    p_miso++; // Skip status byte
-
-    for (uint8_t i = 0; i < len; i++) {
-        *buf++ = *p_miso++;
-    }
+    
+    digitalWrite(csn_pin_, 1); 
 }

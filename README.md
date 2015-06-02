@@ -3,7 +3,7 @@
 nRF24L01p-data-link driver is a high-speed, optimized and reliable Raspberry Pi and Arduino driver for the Nordic nRF24L01+ Ultra low power 2.4GHz RF Transceiver.
 
 Driver features and goals:
-  - High speed: up to 215 KB/s transfer speeds between 2 Raspberry PIs and 203 KB/s on the Arduino
+  - High speed: up to 215 KB/s transfer speeds between 2 Raspberry PIs and 200 KB/s on the Arduino
   - Reliable: driver is made according to the Nordic specification. This ensures correct timing between transceivers.
   - Durable: Over one hour worth of packets sent (over 1 million) without a single dropped packet.
   - Clear written API for easy use in your projects
@@ -151,9 +151,9 @@ $ g++ *other flags* -lnRF24L01p -lbcm2835 -o *output* *source*
 ### Other examples
 Further examples can be found in the `/examples/` dir:
 * *hello_word*: Basic sending and receiving of a package
-* *high_speed*: Transfer without ACK (213 KB/s on an RPi2 and 203 KB/s on an arduino)
-* *high_speed_ack*: Transfer with ACK (around 67 KB/s)
-* *retry*: Slowest speed transfer with indefinite retries (around 16 KB/s)
+* *high_speed*: Transfer without ACK (fastest)
+* *high_speed_ack*: Transfer with ACK (fastest and reliable)
+* *retry*: Slowest speed transfer with indefinite retries
 
 To compile and run examples:
 ```sh

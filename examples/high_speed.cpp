@@ -37,7 +37,7 @@ unsigned long current_timestamp_milliseconds() {
 }
 
 /*
- * Example using maximum speed (around 203 KB/s)
+ * Example using maximum speed
  */
 int main(int argc, char** argv) {
     
@@ -55,9 +55,8 @@ int main(int argc, char** argv) {
     address2[1] = 0xC2;
     address2[2] = 0xC2;
     
-    // Set smallest address with for minimum overhead
-    uint8_t address_width = 0b01;
-    
+    // Set smallest address width for minimum overhead
+    uint8_t address_width = 0b01;    
     nRF24L01p.set_address_width(&address_width);
     
     // Disable CRC for minimum overhead
@@ -165,4 +164,3 @@ int main(int argc, char** argv) {
     
     return 0;
 }
-

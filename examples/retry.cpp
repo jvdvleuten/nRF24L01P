@@ -50,16 +50,16 @@ int main(int argc, char** argv) {
     address1[0] = 0xE7;
     address1[1] = 0xE7;
     address1[2] = 0xE7;
-    address1[3] = 0xE7;
-    address1[4] = 0xE7;
 
     uint8_t address2[5];
     address2[0] = 0xC2;
     address2[1] = 0xC2;
     address2[2] = 0xC2;
-    address2[3] = 0xC2;
-    address2[4] = 0xC2;
-
+    
+    // Set smallest address width for minimum overhead
+    uint8_t address_width = 0b01;    
+    nRF24L01p.set_address_width(&address_width);
+    
     nRF24L01p.set_enable_crc(1);
     nRF24L01p.set_crco_encoding_scheme(1);
 
@@ -171,4 +171,3 @@ int main(int argc, char** argv) {
     
     return 0;
 }
-

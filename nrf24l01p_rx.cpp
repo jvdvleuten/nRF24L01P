@@ -50,7 +50,7 @@ void NRF24L01p::read_rx_payload(void* buf, uint8_t length) {
 
     uint8_t *p_buf = static_cast<uint8_t*> (buf);
 
-    for (int i = 0; i < length; i++) {
+    while (length--) {
         *p_buf++ = *p_rx_payload++;
     }
 }

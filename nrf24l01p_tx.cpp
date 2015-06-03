@@ -36,14 +36,14 @@ void NRF24L01p::block_when_tx_mode_more_than_4ms() {
     // So we block the TX FIFO every 32 packets
     //
     // Todo: update timing for other speeds, as less packets will be send per ms    
-    
+
     bool is_tx_fifo_empty = tx_fifo_empty();
 
     if (is_tx_fifo_empty) {
         fifo_tx_written_counter = 0;
-    }     
-    
-    if (!is_tx_fifo_empty && fifo_tx_written_counter > 32) {        
+    }
+
+    if (!is_tx_fifo_empty && fifo_tx_written_counter > 32) {
         while (!tx_fifo_empty()) {
             // The nRF24L01+ transmitter PLL operates in open loop when in TX
             // mode. It is important never to keep the nRF24L01+ in TX mode for more than 4ms at a time. If the
@@ -65,14 +65,14 @@ void NRF24L01p::write_tx_payload(void* buf, uint8_t length) {
 
     uint8_t *p_buf = static_cast<uint8_t*> (buf);
 
-    for (int i = 0; i < length; i++) {
+    while (length--) {
         *p_tx_payload++ = *p_buf++;
     }
 
     spi.write_command(W_TX_PAYLOAD, tx_payload, 32);
 
     if (!auto_ack_enabled) {
-        fifo_tx_written_counter++;       
+        fifo_tx_written_counter++;
     }
 }
 
@@ -84,7 +84,8 @@ void NRF24L01p::write_tx_payload_noack(void* buf, uint8_t length) {
 
     uint8_t *p_buf = static_cast<uint8_t*> (buf);
 
-    for (int i = 0; i < length; i++) {
+    while(length--)
+    {
         *p_tx_payload++ = *p_buf++;
     }
 

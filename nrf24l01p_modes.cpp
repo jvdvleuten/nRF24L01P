@@ -43,6 +43,10 @@ void NRF24L01p::set_prim_rx() {
 
     spi.write_register(RX_PW_P0, &payload_width, sizeof (uint8_t));
     spi.write_register(RX_PW_P1, &payload_width, sizeof (uint8_t));
+    spi.write_register(RX_PW_P2, &payload_width, sizeof (uint8_t));
+    spi.write_register(RX_PW_P3, &payload_width, sizeof (uint8_t));
+    spi.write_register(RX_PW_P4, &payload_width, sizeof (uint8_t));
+    spi.write_register(RX_PW_P5, &payload_width, sizeof (uint8_t));
 
     spi.set_ce_pin(1);
 

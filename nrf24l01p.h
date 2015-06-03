@@ -26,30 +26,30 @@ class NRF24L01p {
     SpiInterface spi;
 public:
     NRF24L01p(uint8_t ce_pin, uint8_t csn_pin);
-    
-    void init(void);    
-     
+
+    void init(void);
+
     // Get config byte
-    uint8_t get_config(void); 
+    uint8_t get_config(void);
     // Get status byte
-    uint8_t get_status(void);  
+    uint8_t get_status(void);
     // Get fifo status byte
     uint8_t get_fifo_status(void);
     // Get feature byte
     uint8_t get_feature(void);
-    
+
     void setup_retries(uint8_t ard, uint8_t arc);
-    
+
     void set_enable_crc(bool enable);
     /*
      * Setup 1 or 2 byte encoding scheme
      * 
      * @param encoding_scheme 0:1byte, 1:2byte
      */
-    void set_crco_encoding_scheme(bool encoding_scheme);  
-    
+    void set_crco_encoding_scheme(bool encoding_scheme);
+
     void set_rf_setup(bool cont_wave, bool rf_dr_low, bool pll_lock, bool rf_dr_high, uint8_t rf_pwr);
-    
+
     // Enable or disable auto ack for all reading pipes
     void enable_auto_ack(bool enable);
     /* 
@@ -57,10 +57,10 @@ public:
      * Will enable auto_ack as well, as it is required for dynamic payload.
      */
     void enable_dynamic_payload(bool enable);
-    
+
     // Enable payload with ack message
     void enable_ack_payload(bool enable);
-    
+
     /*
      * Enables w_tx_payload_noack() for selective no ack transmitting.
      * 
@@ -68,15 +68,20 @@ public:
      * packages sent with w_tx_payload() will be acknowledged by the receiver.
      */
     void enable_dynamic_ack(bool enable);
-    
+
     void set_address_width(uint8_t *address_width);
     void set_tx_addr(uint8_t *address, uint8_t width);
+    void set_rx_addr(uint8_t pipe, uint8_t *address, uint8_t width);
     void set_rx_addr_p0(uint8_t *address, uint8_t width);
-    void set_rx_addr_p1(uint8_t *address, uint8_t width);      
-    
+    void set_rx_addr_p1(uint8_t *address, uint8_t width);
+    void set_rx_addr_p2(uint8_t *address, uint8_t width);
+    void set_rx_addr_p3(uint8_t *address, uint8_t width);
+    void set_rx_addr_p4(uint8_t *address, uint8_t width);
+    void set_rx_addr_p5(uint8_t *address, uint8_t width);
+
     // Power up transceiver
     void power_up(void);
-    
+
     /*
      * Checks maximum number of TX retransmits interrupt.
      * Use this function to check for failed packets during transmit.
@@ -91,20 +96,20 @@ public:
      * @return true when auto retransmit counter exceeds the maximum retries. 
      */
     bool tx_max_rt(void);
-    
+
     // Reset tx_did_send() and tx_max_rt() interrupt.
     void reset_tx_interrupts(void);
     // Reset rx_data_ready() interrupt
     void reset_rx_interrupt(void);
-    
+
     /*
      * Standby-I mode is used to minimize average current consumption while
      * maintaining short start up times. 
      * 
      * Call power_up() before calling set_standby1();
      */
-    void set_standby1(); 
-    
+    void set_standby1();
+
     /*
      * In standby-II mode extra clock buffers are active and more current is 
      * used compared to standby-I mode. nRF24L01+ enters standby-II mode 
@@ -114,16 +119,16 @@ public:
      * PLL settling delay (130μs).
      */
     void set_standby2();
-    
+
     void set_prim_rx(void);
     void set_prim_tx(void);
-    
+
     bool tx_fifo_full(void);
     bool tx_fifo_empty(void);
-    
+
     void flush_tx(void);
-    void flush_rx(void);  
-    
+    void flush_rx(void);
+
     /*
      * Checks Data Ready in RX FIFO interrupt. 
      * 
@@ -140,7 +145,7 @@ public:
      * @return true when new data arrives in RX FIFO. 
      */
     bool rx_data_ready(void);
-    
+
     /*
      * Checks if payloads are available in the RX FIFO.
      * 
@@ -150,15 +155,15 @@ public:
      * @return true when RX FIFO not empty.
      */
     bool payloads_available(void);
-    
+
     /*
      * Read RX payload from the RX FIFO.
      * 
      * @param buf buffer to read the payload in
      * @param length length of the payload
      */
-    void read_rx_payload(void *buf, uint8_t length);    
-    
+    void read_rx_payload(void *buf, uint8_t length);
+
     /*
      * Transmit a payload and ensuring both parties are ready 
      * to send and receive after single transmit.
@@ -171,8 +176,8 @@ public:
      * @param buf buffer to read the payload from
      * @param length length of the payload 
      */
-    bool transmit(void *buf, uint8_t length);   
-    
+    bool transmit(void *buf, uint8_t length);
+
     /*
      * Write payload into TX buffer.
      * 
@@ -198,8 +203,8 @@ public:
      * @param buf buffer to read the payload from
      * @param length length of the payload 
      */
-    void write_tx_payload(void *buf, uint8_t length);  
-    
+    void write_tx_payload(void *buf, uint8_t length);
+
     /*
      * Write payload into TX buffer and set the NO_ACK flag bit in the 
      * Packet Control Field.
@@ -226,11 +231,11 @@ public:
      * @param buf buffer to read the payload from
      * @param length length of the payload 
      */
-    void write_tx_payload_noack(void *buf, uint8_t length);  
-      
-private:        
+    void write_tx_payload_noack(void *buf, uint8_t length);
+
+private:
     bool auto_ack_enabled;
-    void block_when_tx_mode_more_than_4ms(void);    
+    void block_when_tx_mode_more_than_4ms(void);
     unsigned int fifo_tx_written_counter;
 };
 

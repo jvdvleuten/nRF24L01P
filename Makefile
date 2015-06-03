@@ -19,5 +19,5 @@ clean:
 install:
 	install -m 0755 lib$(LIB).so /usr/local/lib/
 	mkdir -p /usr/local/include/$(LIB)
-	install -m 0644 *.h /usr/local/include/$(LIB)/
+	install -m 0644 *.h /usr/local/include/
 	ldconfig

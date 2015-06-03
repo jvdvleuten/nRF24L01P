@@ -62,6 +62,7 @@
 
 #define OBSERVE_TX          0x08
 #define CD                  0x09
+
 #define RX_ADDR_P0          0x0A
 #define RX_ADDR_P1          0x0B
 #define RX_ADDR_P2          0x0C
@@ -69,6 +70,7 @@
 #define RX_ADDR_P4          0x0E
 #define RX_ADDR_P5          0x0F
 #define TX_ADDR             0x10
+
 #define RX_PW_P0            0x11
 #define RX_PW_P1            0x12
 #define RX_PW_P2            0x13

@@ -32,6 +32,10 @@ int main(int argc, char** argv) {
     NRF24L01p nRF24L01p(22, 0);
 
     nRF24L01p.init();
+    
+    nRF24L01p.set_channel(7);
+    nRF24L01p.setup_retries(15, 15);
+    nRF24L01p.set_rf_setup(0, 1, 0, 0, 0b11);
 
     uint8_t address1[5];
     address1[0] = 0xE7;

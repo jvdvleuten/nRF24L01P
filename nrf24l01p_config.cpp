@@ -58,3 +58,7 @@ void NRF24L01p::setup_retries(uint8_t ard, uint8_t arc) {
 
     spi.write_register(SETUP_RETR, &data, sizeof (uint8_t));
 }
+
+void NRF24L01p::set_channel(uint8_t channel) {
+    spi.write_register(RF_CH, &channel, sizeof (uint8_t));
+}

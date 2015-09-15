@@ -41,6 +41,8 @@ public:
     void setup_retries(uint8_t ard, uint8_t arc);
 
     void set_enable_crc(bool enable);
+    
+    void set_channel(uint8_t channel);
     /*
      * Setup 1 or 2 byte encoding scheme
      * 
